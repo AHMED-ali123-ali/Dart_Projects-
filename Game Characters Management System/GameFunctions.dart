@@ -76,8 +76,102 @@ print('Character Number ${i+1}');
 character[i].showCharacterInfo();
 print('==================================');
 }
+}}
+
+void searchCharacterById(List<Character> character){
+  print('Enter Your Id');
+  String id =stdin.readLineSync()!;
+for(int i=0;i<character.length;i++){
+  if(id==character[i].getId()){
+    print('Character Found');
+    character[i].showCharacterInfo();
+    return;
+  }}
+  print('Character Not Found');
 }
 
+void attackCharacter(List<Character> characters) {
+  print('Enter Attacker ID:');
+  String attackerId = stdin.readLineSync()!;
 
+  print('Enter Target ID:');
+  String targetId = stdin.readLineSync()!;
 
+  Character? attacker;
+  Character? target;
+
+  // البحث عن المهاجم والهدف
+  for (int i = 0; i < characters.length; i++) {
+    if (characters[i].getId() == attackerId) {
+      attacker = characters[i];
+    }
+
+    if (characters[i].getId() == targetId) {
+      target = characters[i];
+    }
+  }
+
+  if (attacker == null || target == null) {
+    print('Character Not Found');
+    return;
+  }
+
+  int damage = 0;
+
+  if (attacker is Warrior) {
+    damage = attacker.getSwordDamage();
+  } else if (attacker is Mage) {
+    damage = attacker.getSpellPower();
+  } else if (attacker is Archer) {
+    // مؤقتًا اعتبرنا الـ Range هو الضرر
+    damage = attacker.getRange();
+  }
+
+  int newHealth = target.getHealth() - damage;
+
+  if (newHealth < 0) {
+    newHealth = 0;
+  }
+
+  target.setHealth(newHealth);
+
+  print('Attack Successful');
+  print('${target.getName()} Health = ${target.getHealth()}');
+}
+
+void healCharacter(List<Character> character){
+  print('Enter Character ID :');
+  String id =stdin.readLineSync()!;
+  print('Enter Heal Amount');
+int amount =int.parse(stdin.readLineSync()!);
+for(int i=0;i<character.length;i++){
+  if(id==character[i].getId()){
+ amount = character[i].getHealth()+amount;
+ if(amount>100){
+   character[i].setHealth(100);
+    print('Character Healed Successfully');
+    return;
+
+ }
+ else{
+ character[i].setHealth(amount);
+ print('Character Healed Successfully');
+ return;
+ }
+
+  }
+}
+print('Character Not Found');
+}
+
+void removeCharacter(List<Character>character){
+print('Enter Character ID');
+String id =stdin.readLineSync()!;
+for(int i =0;i<character.length;i++){
+if(character[i].getId()==id){
+  character.removeAt(i);
+  print('Character Removed Successfully');
+  return;
+}}
+print('Character Not Found');
 }
